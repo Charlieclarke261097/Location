@@ -4,7 +4,7 @@
     id          = "com.phonegap.location1"
     versionCode = "1"
     version     = "1.0.0" >
-<plugin name="cordova-plugin-geolocation" spec="~3.0.0" />
+
 <preference name="phonegap-version" value="cli-6.0.0" />
   <name>Location</name>
 
