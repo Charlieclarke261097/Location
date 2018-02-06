@@ -27,4 +27,7 @@
         </array>
     </config-file>
     
+    <plugin name="cordova-plugin-whitelist" spec="~1.3.3" />
+    <access origin="*" />
+    
 </widget>
