@@ -1,52 +1,50 @@
-//when the jQuery Mobile page is initialised
-$(document).on('pageinit', function() {
-	
-	//set up listener for button click
-	$(document).on('click', getPosition);
-	
-	//change time box to show message
-	$('#time').val("Press the button to get location data");
-	
-});
+Backendless.initApp("3F4DF6B3-BD68-2097-FFF1-1E29A6C5EC00","89A5E954-BFC0-5152-FF19-99AB46D7CB00");
 
 
-//Call this function when you want to get the current position
-function getPosition() {
-	
-	//change time box to show updated message
-	$('#time').val("Getting data...");
-	
-	//instruct location service to get position with appropriate callbacks
-	navigator.geolocation.getCurrentPosition(successPosition, failPosition);
+$(document).on("pageshow","#todoPage", onPageShow);
+function onPageShow() {
+console.log("page shown");
 }
 
+Backendless.Data.of("TASKS").find().then(processResults).catch(error);
+function processResults(tasks) {
+ 
 
-//called when the position is successfully determined
-function successPosition(position) {
-	var unixtime = new Date(position.timestamp);
-    var date = unixtime.toDateString();
-	
-	//You can find out more details about what the position obejct contains here:
-	// http://www.w3schools.com/html/html5_geolocation.asp
-	
 
-	//lets get some stuff out of the position object
-	var time = position.timestamp;
-	var latitude = position.coords.latitude;
-	var longitude = position.coords.longitude;
-	//OK. Now we want to update the display with the correct values
-	$('#time').val("Recieved data at " + date);
-	$('#lattext').val(latitude);
-    $('#longtext').val(longitude);
+
+//wipe the list clean
+$("#taskList").empty();
+  
+ //add each tasks
+for (var i = 0; i < tasks.length; i++) {
+ $("#taskList").append("<li>"+tasks[i].Task+"</li>");
+}
+ 
+//refresh the listview
+$("#taskList").listview('refresh');
+}
+ function error(err){
+     alert(err); 
+ }
     
     
-
+$(document).on("click", "#addTaskButton", onAddTask);
+    
+function onAddTask() {
+console.log("add task button clicked");
+    
+    var tasktext = $("#addTaskText").val();    
+    
+var newTask = {};
+newTask.Task = tasktext;
+    
+Backendless.Data.of("Tasks").save(newTask).then(saved).catch(error);
+ 
 }
+    
+function saved(savedTask) {
+console.log( "new Contact instance has been saved" + savedTask);   
 
-//called if the position is not obtained correctly
-function failPosition(error) {
-	//change time box to show updated message
-	$('#time').val("Error getting data: " + error);
-	
-}
-
+   
+ 
+}   
